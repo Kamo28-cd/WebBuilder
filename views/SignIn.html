@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Login</title>
+
+
+
+<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
+<link href="css/loginstyles.css" rel="stylesheet" type="text/css">
+<link href="css/alert.css" rel="stylesheet" type="text/css">
+
+
+
+<!--web-fonts-->
+<link href="//fonts.googleapis.com/css?family=Romanesco" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Roboto:400,500,100,100italic,300,300italic,500italic,700,700italic,900,900italic,400italic" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery.min.js"></script>
+         
+</head>
+
+<body>
+<div class="container" id="container">
+	<div class="form-container sign-up-container">
+		<form action="" onsubmit="return false">
+			<h1>Create Account</h1>
+			<div class="social-container">
+				<a href="#" class="social"><i class="fa fa-facebook"></i></a>
+				<a href="#" class="social"><i class="fa fa-google"></i></a>
+				<a href="#" class="social"><i class="fa fa-linkedin"></i></a>
+			</div>
+			<span>or sign up with your email</span>
+			<fieldset style="">
+			<input type="text" id="first_name" name="name" placeholder="first name">
+			<input type="text" id="last_name" name="name" placeholder="last name">
+			</fieldset>
+			<input type="email" id="email" name="name" placeholder="email">
+			<input type="password" id="password" name="password" placeholder="password">
+			<button type="submit" id="createaccount">Sign Up</button>
+		</form>
+	</div>
+	<div class="form-container sign-in-container">
+		<form action="" onsubmit="return false">
+			<h1>Log In</h1>
+			<div class="social-container">
+				<a href="#" class="social"><i class="fa fa-facebook"></i></a>
+				<a href="#" class="social"><i class="fa fa-google"></i></a>
+				<a href="#" class="social"><i class="fa fa-linkedin"></i></a>
+			</div>
+			<span>log in with your account</span>
+			<input type="email" id="login_email" name="name" placeholder="email">
+			<input type="password" id="login_password" name="password" placeholder="password">
+			<a href="forgot-password.php">Forgot your password?</a>
+
+			<button type="submit" id="login">Log In</button>
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<h1>Welcome Back</h1>
+				<p>To get started on your website please login with your personal info</p>
+				<button class="ghost" id="signIn">Log In</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<h1>Hey there!</h1>
+				<p>We know you can't wait to get started, if you're new just click here to sign up</p>
+				<button class="ghost" id="signUp">Sign Up</button>
+			</div>
+		</div>
+		
+	</div>
+
+</div>
+<!-- Start of toast notifications-->
+<div class="alert" style="margin-top:0px !important;">
+	<span class="fa fa-exclamation-circle"></span> 
+	<span class="msg-a">Warning: This is a warning alert!</span>
+	
+	<span class="close-btn-alert">
+		<span class="fa fa-times"></span>
+	</span>
+
+</div>
+
+<div class="alert-success" style="margin-top:0px !important;">
+	<span class="fa fa-check-circle"></span> 
+	<span class="msg-a-success">Success: You've completed this action</span>
+	
+	<span class="close-btn-alert-success">
+		<span class="fa fa-times"></span>
+	</span>
+
+</div>
+<!-- End of toast notifications-->
+ 
+<script type="text/javascript" src="js/toastalert.js"></script> 
+<script type="text/javascript">
+const signUpButton = document.getElementById('signUp');
+const signInButton = document.getElementById('signIn');
+const container = document.getElementById('container');
+
+
+signUpButton.addEventListener('click', () => {
+	container.classList.add("right-panel-active");
+})
+signInButton.addEventListener('click', () => {
+	container.classList.remove("right-panel-active");
+})
+$.ajax({
+	type: "GET",
+	url: "api/gettoken",
+	cache:false,
+	processData: false,
+	contentType:"application/json",
+	data: '',
+	success: function(r) {
+		console.log(r)
+	},
+	error: function(r) {
+		console.log(r)
+	}
+
+});
+
+      		$('#login').click(function() {
+						$.ajax({
+							 
+							 type: "POST",
+							 url: "api/auth",
+							 cache:false,
+							 processData: false,
+							 contentType:"application/json",
+							 data: '{"email": "'+ $("#login_email").val()+'", "password": "'+ $("#login_password").val()+'"}',
+							 success: function(r) {
+								 alertText = JSON.parse(r);
+									
+									
+								alertString = alertText.Success;
+								//console.log(alertString);
+								alertFunction("success",''+alertString+'')
+								setTimeout(function() {
+										//console.log("you did it");
+										//window.location.href="index.html";
+										window.location.href="dashboard";
+										
+									},2000)	
+							 },
+							 error: function(r) {
+								 	alertText = JSON.parse(r.responseText);
+									
+									alertString = alertText.Error;
+									alertFunction("success",''+alertString+'')
+								 	//console.log(r)
+								 }
+						});
+			});
+      </script>
+
+<script type="text/javascript">
+		
+		
+      		$('#createaccount').click(function() {
+						//mydata = '{"username": "'+ $("#username").val()+'", "email": "'+ $("#email").val()+'", "password": "'+ $("#password").val()+'", "gender": "'+ $("#gender").val()+'", "dateofbirth": "'+ $("#dateofbirth").val()+'", "first_name": "'+ $("#first_name").val()+'", "last_name": "'+ $("#last_name").val()+'", "location": "'+ $("#location").val()+'","works_at": "'+ $("#works_at").val()+'", "acc_type": "'+ $("#acc_type").val()+'", "acc_mode": "'+ $("#acc_mode").val()+'","category": "'+ $("#category").val()+'","industry": "'+ $("#industry").val()+'"}';
+						//console.log(mydata)
+						$.ajax({
+							 
+							 type: "POST",
+							 cache:false,
+							 url: "api/users",
+							 processData: false,
+							 contentType:"application/json",
+							 data: '{"email": "'+ $("#email").val()+'", "password": "'+ $("#password").val()+'", "first_name": "'+ $("#first_name").val()+'", "last_name": "'+ $("#last_name").val()+'"}',
+							 success: function(r) {
+									
+								 	//console.log(r)
+									alertText = JSON.parse(r);
+									
+									
+									alertString = alertText.Success;
+									//console.log(alertString);
+									alertFunction("success",''+alertString+'')
+									setTimeout(function() {
+										//console.log("you did it");
+										//window.location.href="admin.php";
+										//container.classList.add("right-panel-active");
+										$('.overlay-left h1').html('One More Step');
+										$('.overlay-left p').html("Just click below to login and you're good to go!");
+										$('.overlay-right p').html("Ready to get started? Login Below and you're all set");
+									},1000)
+							 },
+							 error: function(r) {
+									
+								 	
+								 	setTimeout(function() {
+										$('[data-bs-animate]').removeClass('animated' + $('[data-bs-hover-animate]').attr('data-bs-hover-animate'));}, 2000)
+										$('[data-bs-animate]').addClass('animated' + $('[data-bs-hover-animate]').attr('data-bs-hover-animate'))
+								 	//console.log(r)
+									
+									alertText = JSON.parse(r.responseText);
+									
+									alertString = alertText.Error;
+									
+									
+									alertFunction("warning",'Error:'+alertString+'')
+									
+								 }
+						});
+			});
+      </script>
+</body>
+</html>
