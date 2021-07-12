@@ -16,7 +16,7 @@ Libraries: JQuery
 Architecture: MVC, Rest API
 
 # Licence
-All files, folders and subfolders in this repository excluding the images, popular libaries and frameworks are original work built, 
+All files, folders and subfolders in this repository excluding the images, templates, popular libaries and frameworks are original work built, 
 developed and designed, by the author, and developerKamo28-cd
 CopyRight you are allowed to view and read only.
 Commercial use not permitted reposession not permitted
